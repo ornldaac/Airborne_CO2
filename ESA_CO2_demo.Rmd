@@ -1,8 +1,8 @@
 ---
 title: "Visualizing airborne CO~2~ data"
 output:
-  word_document: default
   html_document: default
+  word_document: default
   pdf_document: default
 ---
 Airborne platforms are used to capture in-situ measurements of atmospheric chemistry, including greenhouse gases.  This technique has been used to estimate anthropogenic emissions of greenhouse gases (Klausner et al., 2020; Krings et al., 2018) and to study the carbon dynamics of ecosystems and landscapes (Parazoo et al., 2016).
@@ -94,7 +94,7 @@ rm(spl.0, spl.1)                          # clean up
 map <- read_osm( bb(spl), ext=1.1 )	      # the background map; use bbox from spl
 tm_shape(map) + tm_rgb() + tm_shape(spl) + 
 	tm_lines(col= "blue", lwd= 3) + tm_graticules()  +
-  tm_credits("Figure 2. Paths of all flights in dataset.", align="left") + 
+  tm_credits("Figure 2. Paths of all flights in dataset.", align="left", size=1.0) + 
   tm_layout(attr.outside = T, attr.position=c("left", "bottom"), attr.outside.position = "bottom")
 ```
 
@@ -155,7 +155,7 @@ rm(spl.0, spl.1)                          # clean up
 map <- read_osm( bb(spl), ext=1.1 )	      # uses bbox from spl
 tm_shape(map) + tm_rgb() + tm_shape(spl) + 
 	tm_lines(col= "blue", lwd= 3) + tm_graticules(labels.cardinal=F) + tm_layout(asp=0.75) +
-  tm_credits("Figure 3. Path of flight 20170709", align="left") + 
+  tm_credits("Figure 3. Path of flight 20170709", align="left", size=1.0) + 
   tm_layout(attr.outside = T, attr.position=c("left", "bottom"), attr.outside.position = "bottom")
 ```
 
@@ -169,13 +169,12 @@ pdat <- data.frame(time.lab=t.lab, time=d$time, alt=d$altitude,
 		lat=d$lat, lon=d$lon, co2=d$co2)
 ggplot(pdat, aes(x=time.lab,y=alt)) + geom_point(aes(color=co2)) +
 	scale_color_gradientn(colors = c("blue", "green", "orange", "red")) +
-	theme_classic() + theme(legend.position="bottom") + 
 	scale_x_datetime(breaks = scales::date_breaks("30 mins"), # adjust date_breaks as needed for x axis label
-	 	date_labels = "%H:%M") +
-	labs(x="Time (UTC)", y="Altitude (m)")
+	 	date_labels = "%H:%M") + 	theme_classic()  + 
+	labs(x="Time (UTC)", y="Altitude (m)", caption="Figure 4.  CO2 concentrations by altitude.") +
+  theme(legend.position="bottom", plot.caption=element_text(hjust=0, size=12))
 ```
 
-Figure 4.  CO~2~ concentrations by altitude.
 
 The northwest corner of Figure 3 shows a looping flight that might be interesting. Let's zoom into that area using coordinates.
 
@@ -193,11 +192,12 @@ spl.0 <- Line(cbind(d$lon, d$lat))	      # create a line object from dataframe
 spl.1 <- Lines(list(spl.0), ID=ID[1])
 spl <- SpatialLines(list(spl.1), proj4string = gcs)
 rm(spl.0, spl.1)                          # clean up
-map <- read_osm( bb(spl), ext=1.1 )	      # uses bbox from spl
+map <- read_osm( bb(spl), ext=1.3 )	      # uses bbox from spl
 tm_shape(map) + tm_rgb() + tm_shape(spl) + 
 	tm_lines(col= "blue", lwd= 3) + tm_graticules(labels.cardinal=F)  +
-  tm_credits("Figure 5. Northeast portion of flight path from Figure 3.", align="left") + 
-  tm_layout(attr.outside = T, attr.position=c("left", "bottom"), attr.outside.position = "bottom")
+  tm_credits("Figure 5. Northeast portion of flight path from Fig. 3.", align="left", size=1, width=1) + 
+  tm_layout(attr.outside = T, attr.position=c("left", "bottom"), attr.outside.position = "bottom", asp=1.05) 
+# + tmap_options(output.size = 81)
 ```
 
 Again , plot the CO~2~ concentrations by altitude.
@@ -209,11 +209,11 @@ ggplot(pdat, aes(x=time.lab,y=alt)) + geom_point(aes(color=co2)) +
 	scale_color_gradientn(colors = c("blue", "green", "orange", "red")) +
 	theme_classic() + theme(legend.position="bottom") + 
 	scale_x_datetime(breaks = scales::date_breaks("5 mins"), 
-	 	date_labels = "%H:%M") +
-	labs(x="Time (UTC)", y="Altitude (m)")
+	 	date_labels = "%H:%M") +	
+	labs(x="Time (UTC)", y="Altitude (m)", caption="Figure 6.  CO2 concentrations by altitude.") +
+  theme(legend.position="bottom", plot.caption=element_text(hjust=0, size=12))
 ```
 
-Figure 6.  CO~2~ concentrations by altitude.
 
 Figures 5-6 show that the aircraft was spirally downward to measure a vertical profile of atmospheric chemistry.
 
@@ -258,14 +258,16 @@ for (i in 2:length(flt)){
 spl.2 <- SpatialLines(spl.1)
 proj4string(spl.2) <- gcs
 
-map <- read_osm( bb(spl.2), ext=1.1 )	
-tm <- tm_shape(map) + tm_rgb() + tm_shape(spl.2[1]) +  tm_lines(col=r.colr[1], lwd=2)
+map <- read_osm( bb(spl.2), ext=1.5 )	
+tm <- tm_shape(map) + tm_rgb() + tm_shape(spl.2[1]) +  tm_lines(col=r.colr[1], lwd=2) + 
+                      tm_graticules(labels.cardinal=F) 
 for (i in 2:length(flt)){ tm <- tm + tm_shape(spl.2[i]) +  
                           tm_lines(col=r.colr[i], lwd=2) }
-tm + tm_add_legend("line", col=r.colr, labels=flt, title="Flight IDs") + 
+tm  + tm_add_legend("line", col=r.colr, labels=flt, title="Flight IDs") + 
   tm_layout(legend.outside=T)   +
-  tm_credits("Figure 7. Path of flights from southeast Alaska.", align="left") + 
-  tm_layout(attr.outside = T, attr.position=c("left", "bottom"), attr.outside.position = "bottom")
+  tm_credits("Figure 7. Path of flights from southeast Alaska.", align="left", size=1) + 
+  tm_layout(attr.outside = T, attr.position=c("left", "bottom"), attr.outside.position = "bottom", asp=1.05,
+            legend.text.size=0.9)
 ```
 
 
@@ -279,10 +281,11 @@ ggplot(pdat, aes(x=time.lab,y=alt)) + geom_point(aes(color=co2)) +
 	theme_classic() + theme(legend.position="bottom") + 
 	scale_x_datetime(breaks = scales::date_breaks("15 days"), 
 	 	date_labels = "%m-%d") +
-	labs(x="Time (UTC)", y="Altitude (m)")
+	labs(x="Time (UTC)", y="Altitude (m)", caption="Figure 8.  CO2 concentrations by altitude for multiple flights.") +
+  theme(legend.position="bottom", plot.caption=element_text(hjust=0, size=12))
 ```
 
-Figure 8.  CO~2~ concentrations by altitude for multiple flights.
+
 
 The CO~2~ data for a specific flight or time period could be extracted by filtering by date (i.e., time.filter() function) or *flight_id* (flight.filter()) shown above. 
 
