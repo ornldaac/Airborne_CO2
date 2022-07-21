@@ -1,0 +1,314 @@
+---
+title: "Visualizing airborne CO~2~ data"
+output:
+  word_document: default
+  html_document: default
+  pdf_document: default
+---
+Airborne platforms are used to capture in-situ measurements of atmospheric chemistry, including greenhouse gases.  This technique has been used to estimate anthropogenic emissions of greenhouse gases (Klausner et al., 2020; Krings et al., 2018) and to study the carbon dynamics of ecosystems and landscapes (Parazoo et al., 2016).
+
+This document will discuss properties of in-situ measurements of atmospheric gases from airborne platforms, and the exercise will illustrate how to visualize an example dataset as well as subset it by temporal and spatial bounds.
+
+This exercise will use data from *ABoVE_2017_insitu_10sec.nc*, a file downloaded from [Sweeney and McKain (2019)](https://doi.org/10.3334/ORNLDAAC/1658). Please review the The [User Guide](https://daac.ornl.gov/ABOVE/guides/ABoVE_Arctic_CAP.html) for this dataset before proceeding.  This guide contains important information on the organization of the dataset, file naming conventions, and variables. It will be helpful to have the User Guide open for quick reference.
+
+The data set includes measurements of carbon dioxide (CO~2~), methane (CH~4~), and carbon monoxide (CO) concentrations taken during flights over Alaska, Canada, and the continental U.S. in 2017. During the flights, air samples were collected and analyzed using on-board instrumentation. Each data point is a time-stamped measurement taken in 3-dimensional space (longtitude, latitude, altitude).  During 2017, the flight lines (Figure 1) were repeated several times between April to November, with some spatial variability, in order to sample sample carbon dynamics over northern biomes during the growing season.
+
+![Artic-CAP flight paths 2017](https://daac.ornl.gov/ABOVE/guides/ABoVE_Arctic_CAP_Fig1.png)
+
+Figure 1. General path of flight lines for the Artic-CAP project for 2017.  Flight lines were repeated several times during the growing season. Sources: Sweeney and McKain (2019); Scientific Aviation (2019)
+
+The data file is in NetCDF format, an open-source format that can contain variables of different types (string, numeric) and formats (single values, vectors, matrices of multiple dimensions) in the same file.  Metadata for each variable are encoded inside the file. 
+
+This file includes approximately 45 variables, but all of them are not needed for this exercise. We will use *altitude*, *flight_id*, *CO2*, *CO2_unc*, *latitude*, *longitude*, and *time* (Table 1) and focus on the CO~2~ measurements. These variables are indexed by a single dimension.
+
+Table 1. Variables used in this exercise.
+
+Variable |	Units/format	| Description |
+:-------:|:----------:|:------------------------------------|
+altitude |	m.a.s.l.	| Sample altitude (GPS altitude) in meters above sea level
+flight_id	|YYYYMMDD	| A unique number identifying each flight. The format is the date in YYYYMMDD on which the flight began. See Table 1.
+CO2	| umol per mol |	Mole fraction of carbon dioxide in dry air; average of all measurements made in the time interval. Mole fraction reported in units of micromole per mole (1e-6 mol per mol of dry air); equivalent to ppm (parts per million). Fill value: -9999
+CO2_unc	| umol per mol |	Estimated uncertainty of the reported value. May be a single average uncertainty value for the whole dataset. The mole fraction reported in units of micromole per mole (1e-6 mol per mol of dry air); equivalent to ppm (parts per million).Fill value: -9999
+latitude |	Decimal degrees	| Latitude at which air sample was collected
+longitude	| Decimal degrees	| Longitude at which air sample was collected
+time	| seconds since 1970-01-01T00:00:00Z	| Number of seconds since January 1, 1970 in UTC. Time-averaged values are reported at the beginning of the averaging interval. 
+
+
+```{r include=F, eval=FALSE}
+## vars of interest
+# $ time           : num [1:107400(1d)] # seconds since 1970-01-01T00:00:00Z
+# $ latitude       : num [1:107400(1d)] 40 40 40 40 40 ...
+# $ longitude      : num [1:107400(1d)] -105 -105 -105 -105 -105 ...
+# $ altitude       : num [1:107400(1d)] 1617 1617 1617 1631 1651 ...
+# $ CO2            : num [1:107400(1d)] 419 419 419 # umol per mol
+# $ CO2_unc        : num [1:107400(1d)] 0.05 0.05 # uncertainty: umol per mol
+# $ flight_id      : num [1:107400(1d)] 20170426 20170426 20170426 ...
+```
+
+---
+
+---
+
+The rest of the document illustrates how visualize the data on a map and examine patterns in CO~2~ concentrations by altitude.  Methods for subseting the data by time and space are included. The R packages employed are: RNetCDF, lubridate, ggplot2, sp, scales, tmap, tmaptools, OpenStreetMap.
+
+This R code opens the NetCDF and reads one variable at a time to build at a dataframe *d*.  Records without CO~2~ data are deleted, resulting in a dataframe with 95,415 records.
+```{r include=T}
+library(RNetCDF)
+nc <- open.nc("ABoVE_2017_insitu_10sec.nc")   # file must be in the working directory
+  # print.nc(nc)	# Displays metadata about variables and structure, same as NCO 'ncdump -h'
+  
+# read in one variable at time to build a dataframe named 'd'
+  x <- var.get.nc(nc, "time")
+  d <- data.frame(time=x)
+  d$lat <- var.get.nc(nc, "latitude")
+  d$lon <- var.get.nc(nc, "longitude")
+  d$altitude <- var.get.nc(nc, "altitude")
+  d$co2 <- var.get.nc(nc, "CO2")
+  d$co2_unc <- var.get.nc(nc, "CO2_unc")
+  d$flight_id <- var.get.nc(nc, "flight_id")
+close.nc(nc)
+
+# dim(d)	       # 107400 records    7 variables
+d <- d[!is.na(d$co2), ]	  # delete records without CO2 data
+d.bak <- d	              # back up dataframe
+dim(d)	        # 95415     7
+```
+
+First, let's visualize the spatial extent of the data.  The code below creates a spatial lines object from the dataframe then displays it on a map. 
+
+```{r include=T}
+## Plot the flight paths for entire dataset
+library(sp)
+library(tmap)
+library(tmaptools)
+library(OpenStreetMap)
+
+gcs <- CRS("+proj=longlat +datum=WGS84")  # projection information for lon lat coordinates
+ID <- paste0("line_",1:100)
+spl.0 <- Line(cbind(d$lon, d$lat))	      # create a line object from dataframe
+spl.1 <- Lines(list(spl.0), ID=ID[1])
+spl <- SpatialLines(list(spl.1), proj4string = gcs)
+rm(spl.0, spl.1)                          # clean up
+
+# create map with background from from OpenStreetMaps 
+map <- read_osm( bb(spl), ext=1.1 )	      # the background map; use bbox from spl
+tm_shape(map) + tm_rgb() + tm_shape(spl) + 
+	tm_lines(col= "blue", lwd= 3) + tm_graticules()  +
+  tm_credits("Figure 2. Paths of all flights in dataset.", align="left") + 
+  tm_layout(attr.outside = T, attr.position=c("left", "bottom"), attr.outside.position = "bottom")
+```
+
+It is often necessary to subset the dataset to select data for particular dates or locations. Date and time of measurement are recorded in the *time* variable.  Units for *time* are "seconds since 1970-01-01 00:00:00". This code uses utilities from the R lubridate package to convert time values to dates and times, then print a list of the dates.
+
+
+```{r include=T, message=FALSE}
+# Print list of dates
+library(lubridate)
+origin <- as.Date("1970-01-01 00:00:00")               # starting pt for count of seconds (Table 1)
+(origin + seconds(d$time)) %>% date() %>% unique()
+```
+
+These functions help in subsetting data by date & time, geographic location, or flight ID number.
+
+```{r include=T}
+# function to filter by date-time
+time.filter <- function(df,tstrt,tend){
+  ### pass dataframe with starting & ending times in "%Y-%m-%d" UTC (e.g., "2017-04-26")
+  origin <- as.Date("1970-01-01 00:00:00", tz = "UTC")
+  time.start <- paste0(tstrt," 00:00:00") %>% strptime(., "%Y-%m-%d %H:%M:%S", tz = "UTC")
+  time.end   <-  paste0(tend," 23:59:59") %>% strptime(tend, "%Y-%m-%d %H:%M:%S", tz = "UTC")
+  t.strt <- difftime(time.start, origin, units="sec")
+  t.end <- difftime(time.end, origin, units="sec")
+  t.ind <- which((df$time>=t.strt & df$time<=t.end), arr.ind=T) # index
+  return(df[t.ind,])		# return records within date range
+							}	# end of time.filter func
+
+# ... by geographic coordinates
+coord.filter <- function(df, xmin, xmax, ymin, ymax){ # the passed dataframe must have 'lon' and 'lat' fields
+   t.i <- which(df$lat<ymax & df$lat>ymin & 
+				df$lon<xmax & df$lon>xmin)
+  return(df[t.i,])		# return records within date range
+							}	# end of coord.filter func
+
+# ... by flight_id number
+flight.filter <- function(df, flt){	# flt = 8-digit flight_id
+  df <- df[df$flight_id == flt,]
+  return(df)		# return records within date range
+							}	# end of flight.filter func
+```
+
+---
+
+Let's select a specific flight from 9 July 2017 using its *flight_id*. The *flight_id* values are listed in Table 1 of the User Guide, and they correspond to the date of the flight. The map for this flight is drawn using the same code shown above.
+
+```{r include=T}
+## Select a flight: 20170709
+d <- flight.filter(d, 20170709) # replaces dataframe with filtered data
+dim(d) # 1246    7
+```
+
+```{r echo=FALSE}
+spl.0 <- Line(cbind(d$lon, d$lat))	      # create a line object from dataframe
+spl.1 <- Lines(list(spl.0), ID=ID[1])
+spl <- SpatialLines(list(spl.1), proj4string = gcs)
+rm(spl.0, spl.1)                          # clean up
+map <- read_osm( bb(spl), ext=1.1 )	      # uses bbox from spl
+tm_shape(map) + tm_rgb() + tm_shape(spl) + 
+	tm_lines(col= "blue", lwd= 3) + tm_graticules(labels.cardinal=F) + tm_layout(asp=0.75) +
+  tm_credits("Figure 3. Path of flight 20170709", align="left") + 
+  tm_layout(attr.outside = T, attr.position=c("left", "bottom"), attr.outside.position = "bottom")
+```
+
+Now, plot the CO~2~ concentrations by altitude.
+
+```{r include=T}
+# Plot CO2 concentrations by altitude
+library(ggplot2)
+t.lab <- origin + seconds(d$time)         # time label for x axis
+pdat <- data.frame(time.lab=t.lab, time=d$time, alt=d$altitude, 
+		lat=d$lat, lon=d$lon, co2=d$co2)
+ggplot(pdat, aes(x=time.lab,y=alt)) + geom_point(aes(color=co2)) +
+	scale_color_gradientn(colors = c("blue", "green", "orange", "red")) +
+	theme_classic() + theme(legend.position="bottom") + 
+	scale_x_datetime(breaks = scales::date_breaks("30 mins"), # adjust date_breaks as needed for x axis label
+	 	date_labels = "%H:%M") +
+	labs(x="Time (UTC)", y="Altitude (m)")
+```
+
+Figure 4.  CO~2~ concentrations by altitude.
+
+The northwest corner of Figure 3 shows a looping flight that might be interesting. Let's zoom into that area using coordinates.
+
+```{r include=T}
+# Select portion of flight by specifying bounding box
+lon.min <- -112.0   # western longitude
+lon.max <- -111.0   # eastern longitude
+lat.min <- 64.5   # southern latitude
+lat.max <- 65.0   # northern latitude
+d <- coord.filter(d, lon.min,lon.max,lat.min,lat.max)
+```
+
+```{r warning=FALSE, echo=F, message=F}
+spl.0 <- Line(cbind(d$lon, d$lat))	      # create a line object from dataframe
+spl.1 <- Lines(list(spl.0), ID=ID[1])
+spl <- SpatialLines(list(spl.1), proj4string = gcs)
+rm(spl.0, spl.1)                          # clean up
+map <- read_osm( bb(spl), ext=1.1 )	      # uses bbox from spl
+tm_shape(map) + tm_rgb() + tm_shape(spl) + 
+	tm_lines(col= "blue", lwd= 3) + tm_graticules(labels.cardinal=F)  +
+  tm_credits("Figure 5. Northeast portion of flight path from Figure 3.", align="left") + 
+  tm_layout(attr.outside = T, attr.position=c("left", "bottom"), attr.outside.position = "bottom")
+```
+
+Again , plot the CO~2~ concentrations by altitude.
+```{r echo=FALSE}
+t.lab <- origin + seconds(d$time)
+pdat <- data.frame(time.lab=t.lab, time=d$time, alt=d$altitude, 
+		lat=d$lat, lon=d$lon, co2=d$co2)
+ggplot(pdat, aes(x=time.lab,y=alt)) + geom_point(aes(color=co2)) +
+	scale_color_gradientn(colors = c("blue", "green", "orange", "red")) +
+	theme_classic() + theme(legend.position="bottom") + 
+	scale_x_datetime(breaks = scales::date_breaks("5 mins"), 
+	 	date_labels = "%H:%M") +
+	labs(x="Time (UTC)", y="Altitude (m)")
+```
+
+Figure 6.  CO~2~ concentrations by altitude.
+
+Figures 5-6 show that the aircraft was spirally downward to measure a vertical profile of atmospheric chemistry.
+
+---
+
+To start over with the full dataset, restore the dataframe from the backup copy created early in this exercise.
+```{r include=T }
+d <- d.bak
+```
+
+### Subsetting by geographic boundaries
+Since flight lines were flown repeatedly, a spatial subset from the entire dataset may include data from multiple flight lines and dates. 
+
+First, the data were subset from a portion of southeastern Alaska.
+
+```{r include=T, eval=T}
+lon.min <- -164.32   # western longitude
+lon.max <- -156.51   # eastern longitude
+lat.min <- 59.48   # southern latitude
+lat.max <- 65.91   # northern latitude
+d <- coord.filter(d, lon.min,lon.max,lat.min,lat.max)
+# dim(d)  # 11578     7
+unique(d$flight_id)     # show flights
+```
+This subset includes 13 flights, ranging in dates from April to October.  
+```{r include=T, echo=F, message=F}
+## Plot flight paths; color lines by flight_id 
+flt <- unique(d$flight_id)                # list of flights
+
+x1 <- 1:length(flt)                       # create color for each flight_id
+rampPal <- colorRamp(c("blue", "green", "orange", "red"))
+r.colr <- rgb(rampPal((x1 - min(x1))/diff(range(x1))), max=255)
+
+d.sp <- d[,c("lon", "lat", "flight_id")]  # Create sp object with flight lines
+coordinates(d.sp) <- c("lon","lat")
+spl.0 <- Line(d.sp[d.sp$flight_id==flt[1],])
+spl.1 <- list(Lines(spl.0, ID=as.character(flt[1])))
+for (i in 2:length(flt)){
+  spl.0 <- Line(d.sp[d.sp$flight_id==flt[i],])
+  spl.1[[i]] <- Lines(spl.0, ID=as.character(flt[i]))
+                        }   # close for
+spl.2 <- SpatialLines(spl.1)
+proj4string(spl.2) <- gcs
+
+map <- read_osm( bb(spl.2), ext=1.1 )	
+tm <- tm_shape(map) + tm_rgb() + tm_shape(spl.2[1]) +  tm_lines(col=r.colr[1], lwd=2)
+for (i in 2:length(flt)){ tm <- tm + tm_shape(spl.2[i]) +  
+                          tm_lines(col=r.colr[i], lwd=2) }
+tm + tm_add_legend("line", col=r.colr, labels=flt, title="Flight IDs") + 
+  tm_layout(legend.outside=T)   +
+  tm_credits("Figure 7. Path of flights from southeast Alaska.", align="left") + 
+  tm_layout(attr.outside = T, attr.position=c("left", "bottom"), attr.outside.position = "bottom")
+```
+
+
+The plot of the CO~2~ concentrations shows seasonal patterns by altitude, but the temporal details of individual flights are obscured.
+```{r echo=FALSE}
+t.lab <- origin + seconds(d$time)
+pdat <- data.frame(time.lab=t.lab, time=d$time, alt=d$altitude, 
+		lat=d$lat, lon=d$lon, co2=d$co2)
+ggplot(pdat, aes(x=time.lab,y=alt)) + geom_point(aes(color=co2)) +
+	scale_color_gradientn(colors = c("blue", "green", "orange", "red")) +
+	theme_classic() + theme(legend.position="bottom") + 
+	scale_x_datetime(breaks = scales::date_breaks("15 days"), 
+	 	date_labels = "%m-%d") +
+	labs(x="Time (UTC)", y="Altitude (m)")
+```
+
+Figure 8.  CO~2~ concentrations by altitude for multiple flights.
+
+The CO~2~ data for a specific flight or time period could be extracted by filtering by date (i.e., time.filter() function) or *flight_id* (flight.filter()) shown above. 
+
+---
+
+## Supplemental: Spatial subset by graphic
+The code below allows the user to spatially subset the data by graphically by selecting the corners of the bounding box from a plot of coordinates. This approach will work in RStudio or the R GUI, but it does not work in R Markdown.
+
+```{r include=T, eval=F}
+# Spatial select by picking bounding points from plot. ## Not run
+plot(d$lon, d$lat)      # plot the flight path in a regular scatter plot
+tmp <- locator()        # Click on corners of the area of interest (e.g., SW corner then NE corner), 
+                        # then click "Finish" in RStudio or right-click and "Stop" in GUI
+tmp <- as.data.frame(tmp)     # passes locator() output to coord.filter function
+xmin <- min(tmp$x); xmax <- max(tmp$x)
+ymin <- min(tmp$y); ymax <- max(tmp$y)
+d <- coord.filter(d, xmin,xmax,ymin,ymax)
+```
+
+
+
+## References
+Sweeney, C., and K. McKain. 2019. ABoVE: Atmospheric Profiles of CO, CO2 and CH4 Concentrations from Arctic-CAP, 2017. ORNL DAAC, Oak Ridge, Tennessee, USA. https://doi.org/10.3334/ORNLDAAC/1658
+
+Klausner, T.,  M. Mertens, H. Huntrieser, M. Galkowski, G. Kuhlmann, R. Baumann, A. Fiehn, P. Jöckel, M. Pühl, A. Roiger. 2020. Urban greenhouse gas emissions from the Berlin area: A case study using airborne CO2 and CH4 in situ observations in summer 2018. Elementa: Science of the Anthropocene 8:15. https://doi.org/10.1525/elementa.411
+
+Krings, T., B. Neininger, K. Gerilowski, S. Krautwurst, M. Buchwitz, J.P. Burrows, C. Lindemann, T. Ruhtz, D. Schüttemeyer, and H. Bovensmann. 2018. Airborne remote sensing and in situ measurements of atmospheric CO2 to quantify point source emissions. Atmospheric Measurement Techniques 11:721–739. https://doi.org/10.5194/amt-11-721-2018
+
+Parazoo, N.C., R. Commane, S. Wofsy, C.D. Koven, C. Sweeney, D.M. Lawrence, J. Lindaas, R. Y.-W. Chang, and C.E. Miller. 2016. Detecting Regional Patterns of Changing CO2 Flux in Alaska. PNAS 113:7733-7738. https://doi.org/10.1073/pnas.1601085113
