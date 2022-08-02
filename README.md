@@ -13,11 +13,17 @@ This repo hold an R Markdown document prepared for a workshop at the 2022 Ecolog
 
 # 2. Dataset
 
+## 2.1 ABoVE: Atmospheric Profiles of CO, CO2 and CH4 Concentrations from Arctic-CAP, 2017
+
 This exercise will use data from *ABoVE_2017_insitu_10sec.nc*, a file downloaded from [Sweeney and McKain (2019)](https://doi.org/10.3334/ORNLDAAC/1658). The data set includes measurements of carbon dioxide (CO~2~), methane (CH~4~), and carbon monoxide (CO) concentrations taken during flights over Alaska, Canada, and the continental U.S. in 2017. During the flights, air samples were collected and analyzed using on-board instrumentation. Each data point is a time-stamped measurement taken in 3-dimensional space (longtitude, latitude, altitude).  During 2017, the flight lines were repeated several times between April to November, with some spatial variability, in order to sample sample carbon dynamics over northern biomes during the growing season.
 
-Please review the The [User Guide](https://daac.ornl.gov/ABOVE/guides/ABoVE_Arctic_CAP.html) for this dataset before proceeding.  This guide contains important information on the organization of the dataset, file naming conventions, and variables. It will be helpful to have the User Guide open for quick reference.
+Please review the The [User Guide](https://daac.ornl.gov/ABOVE/guides/ABoVE_Arctic_CAP.html) for this dataset before starting the exercise.  This guide contains important information on the organization of the dataset and variables. It will be helpful to have the User Guide open for quick reference.
 
 Sweeney, C., and K. McKain. 2019. ABoVE: Atmospheric Profiles of CO, CO2 and CH4 Concentrations from Arctic-CAP, 2017. ORNL DAAC, Oak Ridge, Tennessee, USA. <https://doi.org/10.3334/ORNLDAAC/1658>
+
+## 2.2 Arctic-Boreal Vulnerability Experiment (ABoVE)
+
+The Arctic-Boreal Vulnerability Experiment (ABoVE) is a NASA Terrestrial Ecology Program field campaign based in Alaska and western Canada between 2016 and 2021. Research for ABoVE links field-based, process-level studies with geospatial data products derived from airborne and satellite sensors, providing a foundation for improving the analysis and modeling capabilities needed to understand and predict ecosystem responses and societal implications.
 
 # 3. Prerequisites
 
@@ -39,10 +45,10 @@ Participants should have a basic understanding of R and some exposure to geospat
 
 ## 4.1 Tutorial  
 
-1. [R Markdown](https://github.com/jessnicwelch/edwebinar_mar19/blob/master/edwebinar_mar19_ornldaac_tutorial.Rmd)  
-2. [Markdown](https://github.com/jessnicwelch/edwebinar_mar19/blob/master/edwebinar_mar19_ornldaac_tutorial.md)  
+1. [R Markdown](https://github.com/ornldaac/airborne_CO2))  
+2. [Markdown](https://github.com/ornldaac/airborne_CO2)  
 
 # 5. Credits
 
-* [R](https://www.r-project.org/) - 4.1.0 (2021-05-18) -- "Camp Pontanezen"  
+* [R](https://www.r-project.org/) - ver 4.2.1 (2022-08-02) -- "Funny-Looking Kid"  
 * [RStudio](https://www.rstudio.com/products/rstudio/) - IDE and notebook construction  
