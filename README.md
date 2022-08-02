@@ -1,15 +1,17 @@
-# Visualizing airborne, in-situ CO2 data from NetCDF using R
+# Visualizing airborne in-situ CO2 data from NetCDF using R
 
-### *Presented at 2022 Ecological Society of America meeting* 
+### Presented at 2022 Ecological Society of America meeting
 
 ### *Workshop: Exploring changes in vulnerable ecosystems with NASA data*
 
 ### August 16, 2022
 
+### Keywords: R, geotrajectory, airborne platform, CO2, NetCDF
+
 
 # 1. Overview
 
-This repo hold an R Markdown document prepared for a workshop at the 2022 Ecological Society of America conference.
+This repository holds an exercise to demonstrate how to visiualize airborne geotrajectory information saved in a NetCDF file and how to subset the dataset for further analysis.  The excercise uses the open-source software R.  The procedure is availabe in an R Markdown document for use with RStudio and also as in standard Markdown format.
 
 # 2. Dataset
 
@@ -21,7 +23,7 @@ Please review the The [User Guide](https://daac.ornl.gov/ABOVE/guides/ABoVE_Arct
 
 Sweeney, C., and K. McKain. 2019. ABoVE: Atmospheric Profiles of CO, CO2 and CH4 Concentrations from Arctic-CAP, 2017. ORNL DAAC, Oak Ridge, Tennessee, USA. <https://doi.org/10.3334/ORNLDAAC/1658>
 
-## 2.2 Arctic-Boreal Vulnerability Experiment (ABoVE)
+## 2.2 Arctic-Boreal Vulnerability Experiment (ABoVE) project
 
 The Arctic-Boreal Vulnerability Experiment (ABoVE) is a NASA Terrestrial Ecology Program field campaign based in Alaska and western Canada between 2016 and 2021. Research for ABoVE links field-based, process-level studies with geospatial data products derived from airborne and satellite sensors, providing a foundation for improving the analysis and modeling capabilities needed to understand and predict ecosystem responses and societal implications.
 
@@ -45,8 +47,8 @@ Participants should have a basic understanding of R and some exposure to geospat
 
 ## 4.1 Tutorial  
 
-1. [R Markdown](https://github.com/ornldaac/airborne_CO2))  
-2. [Markdown](https://github.com/ornldaac/airborne_CO2)  
+1. [R Markdown](https://github.com/ornldaac/airborne_CO2/blob/main/ESA_CO2_demo.Rmd)
+2. [Markdown](https://github.com/ornldaac/airborne_CO2/blob/main/ESA_CO2_demo.md)  
 
 # 5. Credits
 
