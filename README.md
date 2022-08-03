@@ -45,10 +45,11 @@ Participants should have a basic understanding of R and some exposure to geospat
 
 # 4. Procedure
 
-## 4.1 Tutorial  
+## 4.1 Tutorial exercise  
 
 1. [R Markdown](https://github.com/ornldaac/airborne_CO2/blob/main/ESA_CO2_demo.Rmd)
-2. [Markdown](https://github.com/ornldaac/airborne_CO2/blob/main/ESA_CO2_demo.md)  
+2. [Markdown](https://github.com/ornldaac/airborne_CO2/blob/main/ESA_CO2_demo.md)
+3. [PDF](https://github.com/ornldaac/airborne_CO2/blob/main/ESA_CO2_demo.pdf)
 
 # 5. Credits  
 
