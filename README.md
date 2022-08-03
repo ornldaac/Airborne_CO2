@@ -51,6 +51,14 @@ Participants should have a basic understanding of R and some exposure to geospat
 2. [Markdown](https://github.com/ornldaac/airborne_CO2/blob/main/ESA_CO2_demo.md)
 3. [PDF](https://github.com/ornldaac/airborne_CO2/blob/main/ESA_CO2_demo.pdf)
 
+## 4.2 Additional resources
+
+For users new to NetCDFs, these resources may be useful.
+
+* [*NetCD-what? An Ecologist’s Guide to Working with Daymet and other NetCDF-formatted Data*](https://daac.ornl.gov/resources/tutorials/NetCDF_webinar_08302017.html) explains the netCDF file format with examples from gridded weather data.
+* [*Webinar: NetCDF Why and How: Creating Publication Quality NetCDF Datasets*](https://daac.ornl.gov/resources/tutorials/create_publication_quality_netcdf/) discusses the 'how and why' of using the netCDF data structure 
+*  [*How to Open and Work with NetCDF Data in R*](https://github.com/ornldaac/netCDF_data_in_R) is a tutorial providing additional practice working with this data format in R.
+
 # 5. Credits  
 
 * Klausner, T.,  M. Mertens, H. Huntrieser, M. Galkowski, G. Kuhlmann, R. Baumann, A. Fiehn, P. Jöckel, M. Pühl, A. Roiger. 2020. Urban greenhouse gas emissions from the Berlin area: A case study using airborne CO2 and CH4 in situ observations in summer 2018. Elementa: Science of the Anthropocene 8:15. https://doi.org/10.1525/elementa.411
