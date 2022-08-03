@@ -2,9 +2,9 @@
 
 ### Presented at 2022 Ecological Society of America meeting: *Workshop: Exploring changes in vulnerable ecosystems with NASA data*
 
-*Author: ORNL DAAC*
-*Date: August 16, 2022*
-*Contact for ORNL DAAC: uso@daac.ornl.gov*
+*Author: ORNL DAAC*  
+*Date: August 16, 2022*  
+*Contact for ORNL DAAC: uso@daac.ornl.gov*  
 
 ### Keywords: R, geotrajectory, airborne platform, CO2, NetCDF
 
