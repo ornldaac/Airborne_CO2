@@ -1,18 +1,7 @@
 ---
 title: "Visualizing airborne CO<sub>2</sub> data"
-author: "Prepared by the ORNL DAAC https://daac.ornl.gov"
+author: "ORNL DAAC https://daac.ornl.gov"
 date: "August 16, 2022"
-output:
- html_document:
-  keep_md: yes
-  number_sections: no
-  toc: yes
- pdf_document:
-  toc: yes
- md_document:
-    variant: markdown_github
-editor_options:
- chunk_output_type: inline
 ---
 
 # Introduction
