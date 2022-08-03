@@ -1,17 +1,17 @@
 # Visualizing airborne in-situ CO2 data from NetCDF using R
 
-### Presented at 2022 Ecological Society of America meeting
+### Presented at 2022 Ecological Society of America meeting: *Workshop: Exploring changes in vulnerable ecosystems with NASA data*
 
-### *Workshop: Exploring changes in vulnerable ecosystems with NASA data*
-
-### August 16, 2022
+*Author: ORNL DAAC*
+*Date: August 16, 2022*
+*Contact for ORNL DAAC: uso@daac.ornl.gov*
 
 ### Keywords: R, geotrajectory, airborne platform, CO2, NetCDF
 
 
 # 1. Overview
 
-This repository holds an exercise to demonstrate how to visiualize airborne geotrajectory information saved in a NetCDF file and how to subset the dataset for further analysis.  The excercise uses the open-source software R.  The procedure is availabe in an R Markdown document for use with RStudio and also as in standard Markdown format.
+This repository holds an exercise to demonstrate how to visiualize airborne geotrajectory information saved in a NetCDF file and how to subset the dataset for further analysis.  The excercise uses the open-source software R.  The procedure is available in an R Markdown document for use with RStudio, as in standard Markdown format, and as a PDF.
 
 # 2. Dataset
 
