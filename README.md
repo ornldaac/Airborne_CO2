@@ -34,8 +34,8 @@ Participants should have a basic understanding of R and some exposure to geospat
 ## 3.1 R
 
 1. [Download R](https://cran.r-project.org/)  
-2. [Download RStudio](https://www.rstudio.com/products/rstudio/download/#download)  *Required for R Markdown; optional for Markdown version* 
-3. These R packages must be installed: ggplot2, lubridate, OpenStreetMap, RNetCDF, sp, tmap, and tmaptools   
+2. [Download RStudio](https://www.rstudio.com/products/rstudio/download/#download) - *Required* for R Markdown; *optional* for Markdown version 
+3. These R packages must be installed: *ggplot2*, *lubridate*, *OpenStreetMap*, *RNetCDF*, *scales*, *sp*, *tmap*, and *tmaptools*. Code for installing these packages is included.   
 
 ## 3.2 Data
 
@@ -50,7 +50,11 @@ Participants should have a basic understanding of R and some exposure to geospat
 1. [R Markdown](https://github.com/ornldaac/airborne_CO2/blob/main/ESA_CO2_demo.Rmd)
 2. [Markdown](https://github.com/ornldaac/airborne_CO2/blob/main/ESA_CO2_demo.md)  
 
-# 5. Credits
+# 5. Credits  
 
+* Klausner, T.,  M. Mertens, H. Huntrieser, M. Galkowski, G. Kuhlmann, R. Baumann, A. Fiehn, P. Jöckel, M. Pühl, A. Roiger. 2020. Urban greenhouse gas emissions from the Berlin area: A case study using airborne CO2 and CH4 in situ observations in summer 2018. Elementa: Science of the Anthropocene 8:15. https://doi.org/10.1525/elementa.411
+* Krings, T., B. Neininger, K. Gerilowski, S. Krautwurst, M. Buchwitz, J.P. Burrows, C. Lindemann, T. Ruhtz, D. Schüttemeyer, and H. Bovensmann. 2018. Airborne remote sensing and in situ measurements of atmospheric CO2 to quantify point source emissions. Atmospheric Measurement Techniques 11:721–739. https://doi.org/10.5194/amt-11-721-2018
+* Parazoo, N.C., R. Commane, S. Wofsy, C.D. Koven, C. Sweeney, D.M. Lawrence, J. Lindaas, R. Y.-W. Chang, and C.E. Miller. 2016. Detecting Regional Patterns of Changing CO2 Flux in Alaska. PNAS 113:7733-7738. https://doi.org/10.1073/pnas.1601085113
 * [R](https://www.r-project.org/) - ver 4.2.1 (2022-08-02) -- "Funny-Looking Kid"  
 * [RStudio](https://www.rstudio.com/products/rstudio/) - IDE and notebook construction  
+* Sweeney, C., and K. McKain. 2019. ABoVE: Atmospheric Profiles of CO, CO2 and CH4 Concentrations from Arctic-CAP, 2017. ORNL DAAC, Oak Ridge, Tennessee, USA. https://doi.org/10.3334/ORNLDAAC/1658
