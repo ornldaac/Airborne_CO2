@@ -1,5 +1,5 @@
 ---
-title: "Visualizing airborne CO~2~ data"
+title: "Visualizing airborne CO<sub>2</sub> data"
 author: "Prepared by the ORNL DAAC https://daac.ornl.gov"
 date: "August 16, 2022"
 output:
