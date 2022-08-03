@@ -7,14 +7,8 @@ output:
   keep_md: yes
   number_sections: yes
   toc: yes
- html_notebook:
-  number_sections: yes
-  toc: yes
- pdf_document:
-  toc: yes
  md_document:
     variant: markdown_github
-subtitle: NASA Earthdata Webinar
 editor_options:
  chunk_output_type: inline
 ---
