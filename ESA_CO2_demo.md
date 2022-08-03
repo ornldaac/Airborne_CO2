@@ -1,11 +1,13 @@
 ---
-title: "Visualizing airborne CO2 data"
+title: "Visualizing airborne CO<sub>2</sub> data"
 author: "Prepared by the ORNL DAAC https://daac.ornl.gov"
 date: "August 16, 2022"
 output:
  html_document:
   keep_md: yes
-  number_sections: yes
+  number_sections: no
+  toc: yes
+ pdf_document:
   toc: yes
  md_document:
     variant: markdown_github
@@ -15,21 +17,18 @@ editor_options:
 
 # Introduction
 
-Airborne platforms are used to capture in-situ measurements of atmospheric chemistry, including greenhouse gases.  This technique has been used to estimate anthropogenic emissions of greenhouse gases (Klausner et al., 2020; Krings et al., 2018) and to study the carbon dynamics of ecosystems and landscapes (Parazoo et al., 2016).
+This exercise will explore properties of in-situ measurements of atmospheric gases from airborne platforms and illustrate how to visualize an example data set as well as subset it by temporal and spatial bounds.
 
-This document will discuss properties of in-situ measurements of atmospheric gases from airborne platforms, and the exercise will illustrate how to visualize an example dataset as well as subset it by temporal and spatial bounds.
-
-This exercise will use data from *ABoVE_2017_insitu_10sec.nc*, a file downloaded from [Sweeney and McKain (2019)](https://doi.org/10.3334/ORNLDAAC/1658). Please review the The [User Guide](https://daac.ornl.gov/ABOVE/guides/ABoVE_Arctic_CAP.html) for this dataset before proceeding.  This guide contains important information on the organization of the dataset, file naming conventions, and variables. It will be helpful to have the User Guide open for quick reference.
+This exercise will use data from *ABoVE_2017_insitu_10sec.nc*, a file downloaded from [Sweeney and McKain (2019)](https://doi.org/10.3334/ORNLDAAC/1658). Please review the The [User Guide](https://daac.ornl.gov/ABOVE/guides/ABoVE_Arctic_CAP.html) for this data set before proceeding.  This guide contains important information on the organization of the data set and variables. It will be helpful to have the User Guide open for quick reference.
 
 The data set includes measurements of carbon dioxide (CO<sub>2</sub>), methane (CH<sub>4</sub>), and carbon monoxide (CO) concentrations taken during flights over Alaska, Canada, and the continental U.S. in 2017. During the flights, air samples were collected and analyzed using on-board instrumentation. Each data point is a time-stamped measurement taken in 3-dimensional space (longtitude, latitude, altitude).  During 2017, the flight lines (Figure 1) were repeated several times between April to November, with some spatial variability, in order to sample sample carbon dynamics over northern biomes during the growing season.
 
 ![Artic-CAP flight paths 2017](https://daac.ornl.gov/ABOVE/guides/ABoVE_Arctic_CAP_Fig1.png)
 
-Figure 1. General path of flight lines for the Artic-CAP project for 2017.  Flight lines were repeated several times during the growing season. Sources: Sweeney and McKain (2019); Scientific Aviation (2019)
+Figure 1. General path of flight lines for the Artic-CAP project for 2017.  Flight lines were repeated several times during the growing season. Sources: Sweeney and McKain (2019); Scientific Aviation (2019)  
 
-The data file is in NetCDF format, an open-source format that can contain variables of different types (string, numeric) and formats (single values, vectors, matrices of multiple dimensions) in the same file.  Metadata for each variable are encoded inside the file. 
 
-This file includes approximately 45 variables, but all of them are not needed for this exercise. We will use *altitude*, *flight_id*, *CO2*, *CO2_unc*, *latitude*, *longitude*, and *time* (Table 1) and focus on the CO<sub>2</sub> measurements. These variables are indexed by a single dimension.
+ This file includes approximately 45 variables, but all of them are not needed for this exercise. We will use *altitude*, *flight_id*, *CO2*, *CO2_unc*, *latitude*, *longitude*, and *time* (Table 1) and focus on the CO<sub>2</sub> measurements. These variables are indexed by a single dimension.
 
 Table 1. Variables used in this exercise.
 
@@ -38,19 +37,17 @@ Variable |	Units/format	| Description |
 altitude |	m.a.s.l.	| Sample altitude (GPS altitude) in meters above sea level
 flight_id	|YYYYMMDD	| A unique number identifying each flight. The format is the date in YYYYMMDD on which the flight began. See Table 1.
 CO2	| umol per mol |	Mole fraction of carbon dioxide in dry air; average of all measurements made in the time interval. Mole fraction reported in units of micromole per mole (1e-6 mol per mol of dry air); equivalent to ppm (parts per million). Fill value: -9999
-CO2_unc	| umol per mol |	Estimated uncertainty of the reported value. May be a single average uncertainty value for the whole dataset. The mole fraction reported in units of micromole per mole (1e-6 mol per mol of dry air); equivalent to ppm (parts per million).Fill value: -9999
+CO2_unc	| umol per mol |	Estimated uncertainty of the reported value. May be a single average uncertainty value for the whole data set. The mole fraction reported in units of micromole per mole (1e-6 mol per mol of dry air); equivalent to ppm (parts per million).Fill value: -9999
 latitude |	Decimal degrees	| Latitude at which air sample was collected
 longitude	| Decimal degrees	| Longitude at which air sample was collected
 time	| seconds since 1970-01-01T00:00:00Z	| Number of seconds since January 1, 1970 in UTC. Time-averaged values are reported at the beginning of the averaging interval. 
 
-
 ---
 
-The rest of the document illustrates how visualize the data on a map and examine patterns in CO<sub>2</sub> concentrations by altitude, latitude, and longitude.  Methods for creating subsets of the data by time and space are included.
+The rest of the document illustrates how visualize the data on a map and examine patterns in CO<sub>2</sub> concentrations by altitude, latitude, and longitude.  Methods for creating subsets of the data by time and space are included.  
 
----
 
-# Install and Load Packages
+# Install and load R packages
 
  The R packages employed in the exercise are: 
  
@@ -88,7 +85,7 @@ library(tmaptools)
 library(OpenStreetMap) 
 ```
 
-# Load Data
+# Load data
 
 This R code opens the NetCDF for reading metadata and variables. 
 
@@ -128,13 +125,13 @@ dim(d)	                  # 95415     7
 ## [1] 95415     7
 ```
 
-# Visualize the Spatial Extent
+# Visualize the spatial extent
 
 First, let's visualize the spatial extent of the data.  The code below creates a spatial lines object from the dataframe then displays it on a map. Note that downloading the base map from OpenStreetMaps (*read_osm()*) may be slow depending on internet speeds.
 
 
 ```r
-## Plot the flight paths for entire dataset
+## Plot the flight paths for entire data set
 gcs <- CRS("+proj=longlat +datum=WGS84")  # projection information for lon lat coordinates
 ID <- paste0("line_",1:100)
 spl.0 <- Line(cbind(d$lon, d$lat))	      # create a line object from dataframe
@@ -146,13 +143,13 @@ rm(spl.0, spl.1)                          # clean up
 map <- read_osm( bb(spl), ext=1.1 )	      # the background map; use bbox from spl
 tm_shape(map) + tm_rgb() + tm_shape(spl) + 
 	tm_lines(col= "blue", lwd= 3) + tm_graticules()  +
-  tm_credits("Figure 2. Paths of all flights in dataset.", align="left", size=1.0) + 
+  tm_credits("Figure 2. Paths of all flights in data set.", align="left", size=1.0) + 
   tm_layout(attr.outside = T, attr.position=c("left", "bottom"), attr.outside.position = "bottom")
 ```
 
 ![](ESA_CO2_demo_files/figure-html/map-all-flights-1.png)<!-- -->
 
-# Subsetting the Data by Dates
+# Subsetting the data by dates
 
 It is often necessary to select data for particular dates or locations. Date and time of measurement are recorded in the *time* variable. Units for *time* are "seconds since 1970-01-01 00:00:00". This code uses utilities from the R lubridate package to convert *time* values to dates, then prints a list of the dates.
 
@@ -251,7 +248,7 @@ tm_shape(map) + tm_rgb() + tm_shape(spl) +
 The flight starts and end at an airfield near longitude -114.5, latitude 62.4.  
 
 
-# Examine CO<sub>2</sub> Concentrations
+# Examine CO<sub>2</sub> concentrations
 
 To see how CO<sub>2</sub> varied with aircraft altitude, plot altitude against time and color points by CO<sub>2</sub> concentration.
 
@@ -320,14 +317,16 @@ Figure 7 shows a clear gradient in CO<sub>2</sub> concentrations with altitude.
   
 # Data from a mixture of flights
 
-To start over with the full dataset, restore the dataframe from the backup copy created early in this exercise. 
+Since flight lines were flown repeatedly, a spatial subset from the entire data set may include a confusing mixture of data from multiple flight lines and dates.
+
+First, start over with the full data set, restore the dataframe from the backup copy created early in this exercise. 
 
 
 ```r
 d <- d.bak
 ```
 
-Since flight lines were flown repeatedly, a spatial subset from the entire data set may include a confusing mixture of data from multiple flight lines and dates. First, create a subset from a portion of southeastern Alaska and show the flight ID, which correspond to dates.  
+Then, create a subset from a portion of southeastern Alaska. Show the flight ID's, which correspond to dates.  
 
 
 
@@ -371,13 +370,3 @@ ymin <- min(tmp$y); ymax <- max(tmp$y)
 d <- coord.filter(d, xmin,xmax,ymin,ymax)
 ```
 
-
-
-# References
-Sweeney, C., and K. McKain. 2019. ABoVE: Atmospheric Profiles of CO, CO2 and CH4 Concentrations from Arctic-CAP, 2017. ORNL DAAC, Oak Ridge, Tennessee, USA. https://doi.org/10.3334/ORNLDAAC/1658
-
-Klausner, T.,  M. Mertens, H. Huntrieser, M. Galkowski, G. Kuhlmann, R. Baumann, A. Fiehn, P. Jöckel, M. Pühl, A. Roiger. 2020. Urban greenhouse gas emissions from the Berlin area: A case study using airborne CO2 and CH4 in situ observations in summer 2018. Elementa: Science of the Anthropocene 8:15. https://doi.org/10.1525/elementa.411
-
-Krings, T., B. Neininger, K. Gerilowski, S. Krautwurst, M. Buchwitz, J.P. Burrows, C. Lindemann, T. Ruhtz, D. Schüttemeyer, and H. Bovensmann. 2018. Airborne remote sensing and in situ measurements of atmospheric CO2 to quantify point source emissions. Atmospheric Measurement Techniques 11:721–739. https://doi.org/10.5194/amt-11-721-2018
-
-Parazoo, N.C., R. Commane, S. Wofsy, C.D. Koven, C. Sweeney, D.M. Lawrence, J. Lindaas, R. Y.-W. Chang, and C.E. Miller. 2016. Detecting Regional Patterns of Changing CO2 Flux in Alaska. PNAS 113:7733-7738. https://doi.org/10.1073/pnas.1601085113
