@@ -21,7 +21,7 @@ This document will discuss properties of in-situ measurements of atmospheric gas
 
 This exercise will use data from *ABoVE_2017_insitu_10sec.nc*, a file downloaded from [Sweeney and McKain (2019)](https://doi.org/10.3334/ORNLDAAC/1658). Please review the The [User Guide](https://daac.ornl.gov/ABOVE/guides/ABoVE_Arctic_CAP.html) for this dataset before proceeding.  This guide contains important information on the organization of the dataset, file naming conventions, and variables. It will be helpful to have the User Guide open for quick reference.
 
-The data set includes measurements of carbon dioxide (CO<sub>2</sub>), methane (CH~4~), and carbon monoxide (CO) concentrations taken during flights over Alaska, Canada, and the continental U.S. in 2017. During the flights, air samples were collected and analyzed using on-board instrumentation. Each data point is a time-stamped measurement taken in 3-dimensional space (longtitude, latitude, altitude).  During 2017, the flight lines (Figure 1) were repeated several times between April to November, with some spatial variability, in order to sample sample carbon dynamics over northern biomes during the growing season.
+The data set includes measurements of carbon dioxide (CO<sub>2</sub>), methane (CH<sub>4</sub>), and carbon monoxide (CO) concentrations taken during flights over Alaska, Canada, and the continental U.S. in 2017. During the flights, air samples were collected and analyzed using on-board instrumentation. Each data point is a time-stamped measurement taken in 3-dimensional space (longtitude, latitude, altitude).  During 2017, the flight lines (Figure 1) were repeated several times between April to November, with some spatial variability, in order to sample sample carbon dynamics over northern biomes during the growing season.
 
 ![Artic-CAP flight paths 2017](https://daac.ornl.gov/ABOVE/guides/ABoVE_Arctic_CAP_Fig1.png)
 
@@ -29,7 +29,7 @@ Figure 1. General path of flight lines for the Artic-CAP project for 2017.  Flig
 
 The data file is in NetCDF format, an open-source format that can contain variables of different types (string, numeric) and formats (single values, vectors, matrices of multiple dimensions) in the same file.  Metadata for each variable are encoded inside the file. 
 
-This file includes approximately 45 variables, but all of them are not needed for this exercise. We will use *altitude*, *flight_id*, *CO2*, *CO2_unc*, *latitude*, *longitude*, and *time* (Table 1) and focus on the CO~2~ measurements. These variables are indexed by a single dimension.
+This file includes approximately 45 variables, but all of them are not needed for this exercise. We will use *altitude*, *flight_id*, *CO2*, *CO2_unc*, *latitude*, *longitude*, and *time* (Table 1) and focus on the CO<sub>2</sub> measurements. These variables are indexed by a single dimension.
 
 Table 1. Variables used in this exercise.
 
@@ -46,7 +46,7 @@ time	| seconds since 1970-01-01T00:00:00Z	| Number of seconds since January 1, 1
 
 ---
 
-The rest of the document illustrates how visualize the data on a map and examine patterns in CO~2~ concentrations by altitude, latitude, and longitude.  Methods for creating subsets of the data by time and space are included.
+The rest of the document illustrates how visualize the data on a map and examine patterns in CO<sub>2</sub> concentrations by altitude, latitude, and longitude.  Methods for creating subsets of the data by time and space are included.
 
 ---
 
@@ -115,7 +115,7 @@ All 45 variables are not needed, so build  a dataframe, *d*, by reading one vari
 close.nc(nc)    # closes the NetCDF
 ```
 
-Records without CO~2~ data should be deleted, resulting in a dataframe with 95,415 records.
+Records without CO<sub>2</sub> data should be deleted, resulting in a dataframe with 95,415 records.
 
 
 ```r
@@ -251,9 +251,9 @@ tm_shape(map) + tm_rgb() + tm_shape(spl) +
 The flight starts and end at an airfield near longitude -114.5, latitude 62.4.  
 
 
-# Examine CO~2~ Concentrations
+# Examine CO<sub>2</sub> Concentrations
 
-To see how CO~2~ varied with aircraft altitude, plot altitude against time and color points by CO~2~ concentration.
+To see how CO<sub>2</sub> varied with aircraft altitude, plot altitude against time and color points by CO<sub>2</sub> concentration.
 
 
 ```r
@@ -310,11 +310,11 @@ d <- coord.filter(d, lon.min,lon.max,lat.min,lat.max)
 
 ![](ESA_CO2_demo_files/figure-html/map-subset-1.png)<!-- -->
 
-Again , plot the CO~2~ concentrations by altitude and time.
+Again , plot the CO<sub>2</sub> concentrations by altitude and time.
 ![](ESA_CO2_demo_files/figure-html/plot-co2-altitude-subset-1.png)<!-- -->
 
 
-Figure 7 shows a clear gradient in CO~2~ concentrations with altitude.
+Figure 7 shows a clear gradient in CO<sub>2</sub> concentrations with altitude.
 
 ---
   
@@ -352,7 +352,7 @@ This subset includes 13 flights, ranging in dates from April to October.
 
 ![](ESA_CO2_demo_files/figure-html/plot-co2-seAK-1.png)<!-- -->
   
-The plot of the CO~2~ concentrations shows seasonal patterns by altitude, but the temporal details of individual flights are obscured. The CO~2~ data for a specific flight or time period could be extracted by filtering by date (i.e., time.filter() function) or *flight_id* (flight.filter()) shown above.  
+The plot of the CO<sub>2</sub> concentrations shows seasonal patterns by altitude, but the temporal details of individual flights are obscured. The CO<sub>2</sub> data for a specific flight or time period could be extracted by filtering by date (i.e., time.filter() function) or *flight_id* (flight.filter()) shown above.  
 
 ---
 
