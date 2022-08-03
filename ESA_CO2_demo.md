@@ -6,9 +6,9 @@ date: "August 16, 2022"
 
 # Introduction
 
-This exercise will explore properties of in-situ measurements of atmospheric gases from airborne platforms and illustrate how to visualize an example data set as well as subset it by temporal and spatial bounds. It will use data from *ABoVE_2017_insitu_10sec.nc*, a file downloaded from [Sweeney and McKain (2019)](https://doi.org/10.3334/ORNLDAAC/1658). Please review the The [User Guide](https://daac.ornl.gov/ABOVE/guides/ABoVE_Arctic_CAP.html) for this data set before proceeding.  This guide contains important information on the organization of the data set and variables. It will be helpful to have the User Guide open for quick reference.
+This exercise will explore properties of in-situ measurements of atmospheric gases from airborne platforms and illustrate how to visualize an example dataset as well as subset it by temporal and spatial bounds. It will use data from *ABoVE_2017_insitu_10sec.nc*, a file downloaded from [Sweeney and McKain (2019)](https://doi.org/10.3334/ORNLDAAC/1658). Please review the The [User Guide](https://daac.ornl.gov/ABOVE/guides/ABoVE_Arctic_CAP.html) for this dataset before proceeding.  This guide contains important information on the organization of the dataset and variables. It will be helpful to have the User Guide open for quick reference.
 
-The data set includes measurements of carbon dioxide (CO<sub>2</sub>), methane (CH<sub>4</sub>), and carbon monoxide (CO) concentrations taken during flights over Alaska, Canada, and the continental U.S. in 2017. During the flights, air samples were collected and analyzed using on-board instrumentation. Each data point is a time-stamped measurement taken in 3-dimensional space (longtitude, latitude, altitude).  During 2017, the flight lines (Figure 1) were repeated several times between April to November, with some spatial variability, in order to sample sample carbon dynamics over northern biomes during the growing season.
+The dataset includes measurements of carbon dioxide (CO<sub>2</sub>), methane (CH<sub>4</sub>), and carbon monoxide (CO) concentrations taken during flights over Alaska, Canada, and the continental U.S. in 2017. During the flights, air samples were collected and analyzed using on-board instrumentation. Each data point is a time-stamped measurement taken in 3-dimensional space (longtitude, latitude, altitude).  During 2017, the flight lines (Figure 1) were repeated several times between April to November, with some spatial variability, in order to sample sample carbon dynamics over northern biomes during the growing season.
 
 ![Artic-CAP flight paths 2017](https://daac.ornl.gov/ABOVE/guides/ABoVE_Arctic_CAP_Fig1.png)
 
@@ -24,7 +24,7 @@ Variable |	Units/format	| Description |
 altitude |	m.a.s.l.	| Sample altitude (GPS altitude) in meters above sea level
 flight_id	|YYYYMMDD	| A unique number identifying each flight. The format is the date in YYYYMMDD on which the flight began. See Table 1.
 CO2	| umol per mol |	Mole fraction of carbon dioxide in dry air; average of all measurements made in the time interval. Mole fraction reported in units of micromole per mole (1e-6 mol per mol of dry air); equivalent to ppm (parts per million). Fill value: -9999
-CO2_unc	| umol per mol |	Estimated uncertainty of the reported value. May be a single average uncertainty value for the whole data set. The mole fraction reported in units of micromole per mole (1e-6 mol per mol of dry air); equivalent to ppm (parts per million).Fill value: -9999
+CO2_unc	| umol per mol |	Estimated uncertainty of the reported value. May be a single average uncertainty value for the whole dataset. The mole fraction reported in units of micromole per mole (1e-6 mol per mol of dry air); equivalent to ppm (parts per million).Fill value: -9999
 latitude |	Decimal degrees	| Latitude at which air sample was collected
 longitude	| Decimal degrees	| Longitude at which air sample was collected
 time	| seconds since 1970-01-01T00:00:00Z	| Number of seconds since January 1, 1970 in UTC. Time-averaged values are reported at the beginning of the averaging interval. 
@@ -118,7 +118,7 @@ First, let's visualize the spatial extent of the data.  The code below creates a
 
 
 ```r
-## Plot the flight paths for entire data set
+## Plot the flight paths for entire dataset
 gcs <- CRS("+proj=longlat +datum=WGS84")  # projection information for lon lat coordinates
 ID <- paste0("line_",1:100)
 spl.0 <- Line(cbind(d$lon, d$lat))	      # create a line object from dataframe
@@ -130,7 +130,7 @@ rm(spl.0, spl.1)                          # clean up
 map <- read_osm( bb(spl), ext=1.1 )	      # the background map; use bbox from spl
 tm_shape(map) + tm_rgb() + tm_shape(spl) + 
 	tm_lines(col= "blue", lwd= 3) + tm_graticules()  +
-  tm_credits("Figure 2. Paths of all flights in data set.", align="left", size=1.0) + 
+  tm_credits("Figure 2. Paths of all flights in dataset.", align="left", size=1.0) + 
   tm_layout(attr.outside = T, attr.position=c("left", "bottom"), attr.outside.position = "bottom")
 ```
 
@@ -304,9 +304,9 @@ Figure 7 shows a clear gradient in CO<sub>2</sub> concentrations with altitude.
   
 # Data from a mixture of flights
 
-Since flight lines were flown repeatedly, a spatial subset from the entire data set may include a confusing mixture of data from multiple flight lines and dates.
+Since flight lines were flown repeatedly, a spatial subset from the entire dataset may include a confusing mixture of data from multiple flight lines and dates.
 
-First, start over with the full data set, restore the dataframe from the backup copy created early in this exercise. 
+First, start over with the full dataset, restore the dataframe from the backup copy created early in this exercise. 
 
 
 ```r
