@@ -1,6 +1,6 @@
 # Visualizing airborne in-situ CO2 data from NetCDF using R
 
-### Presented at 2022 Ecological Society of America meeting: *Workshop: Exploring changes in vulnerable ecosystems with NASA data*
+### Presented at 2022 Ecological Society of America workshop: *Exploring changes in vulnerable ecosystems with NASA data*
 
 *Author: ORNL DAAC*  
 *Date: August 16, 2022*  
