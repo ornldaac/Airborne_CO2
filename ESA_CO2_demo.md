@@ -17,9 +17,7 @@ editor_options:
 
 # Introduction
 
-This exercise will explore properties of in-situ measurements of atmospheric gases from airborne platforms and illustrate how to visualize an example data set as well as subset it by temporal and spatial bounds.
-
-This exercise will use data from *ABoVE_2017_insitu_10sec.nc*, a file downloaded from [Sweeney and McKain (2019)](https://doi.org/10.3334/ORNLDAAC/1658). Please review the The [User Guide](https://daac.ornl.gov/ABOVE/guides/ABoVE_Arctic_CAP.html) for this data set before proceeding.  This guide contains important information on the organization of the data set and variables. It will be helpful to have the User Guide open for quick reference.
+This exercise will explore properties of in-situ measurements of atmospheric gases from airborne platforms and illustrate how to visualize an example data set as well as subset it by temporal and spatial bounds. It will use data from *ABoVE_2017_insitu_10sec.nc*, a file downloaded from [Sweeney and McKain (2019)](https://doi.org/10.3334/ORNLDAAC/1658). Please review the The [User Guide](https://daac.ornl.gov/ABOVE/guides/ABoVE_Arctic_CAP.html) for this data set before proceeding.  This guide contains important information on the organization of the data set and variables. It will be helpful to have the User Guide open for quick reference.
 
 The data set includes measurements of carbon dioxide (CO<sub>2</sub>), methane (CH<sub>4</sub>), and carbon monoxide (CO) concentrations taken during flights over Alaska, Canada, and the continental U.S. in 2017. During the flights, air samples were collected and analyzed using on-board instrumentation. Each data point is a time-stamped measurement taken in 3-dimensional space (longtitude, latitude, altitude).  During 2017, the flight lines (Figure 1) were repeated several times between April to November, with some spatial variability, in order to sample sample carbon dynamics over northern biomes during the growing season.
 
