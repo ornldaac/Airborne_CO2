@@ -1,5 +1,5 @@
 ---
-title: "Visualizing airborne CO<sub>2</sub> data"
+title: "Visualizing airborne CO<sub>2</sub> geotrajectory data"
 author: "ORNL DAAC https://daac.ornl.gov"
 date: "August 16, 2022"
 ---
@@ -134,7 +134,7 @@ tm_shape(map) + tm_rgb() + tm_shape(spl) +
   tm_layout(attr.outside = T, attr.position=c("left", "bottom"), attr.outside.position = "bottom")
 ```
 
-![](ESA_CO2_demo_files/figure-html/map-all-flights-1.png)<!-- -->
+![](Airborne_geotrajectory_CO2_files/figure-html/map-all-flights-1.png)<!-- -->
 
 # Subsetting the data by dates
 
@@ -230,7 +230,7 @@ tm_shape(map) + tm_rgb() + tm_shape(spl) +
   tm_layout(attr.outside = T, attr.position=c("left", "bottom"), attr.outside.position = "bottom")
 ```
 
-![](ESA_CO2_demo_files/figure-html/map-for-flight-1.png)<!-- -->
+![](Airborne_geotrajectory_CO2_files/figure-html/map-for-flight-1.png)<!-- -->
 
 The flight starts and end at an airfield near longitude -114.5, latitude 62.4.  
 
@@ -254,7 +254,7 @@ ggplot(pdat, aes(x=time.lab,y=alt)) + geom_point(aes(color=co2)) +
   theme(legend.position="bottom", plot.caption=element_text(hjust=0, size=12))
 ```
 
-![](ESA_CO2_demo_files/figure-html/plot-c02-altitude-1.png)<!-- -->
+![](Airborne_geotrajectory_CO2_files/figure-html/plot-c02-altitude-1.png)<!-- -->
   
 Plotting by latitude or longitude can be useful. Use latitude here because this flight has a primarily north-south route (Figure 3).
 
@@ -273,7 +273,7 @@ ggplot(pdat, aes(x=lat,y=alt)) + geom_point(aes(color=co2)) +
   theme(legend.position="bottom", plot.caption=element_text(hjust=0, size=12))
 ```
 
-![](ESA_CO2_demo_files/figure-html/plot-c02-latitude-1.png)<!-- -->
+![](Airborne_geotrajectory_CO2_files/figure-html/plot-c02-latitude-1.png)<!-- -->
 
 
 Figures 3-5 show that this flight flew north first with a gradual increase in altitude.  At its northern extent, it took a spiraling descent to sample a vertical profile of atmospheric chemistry.  On the way back south, the aircraft ascended to >5000 m before executing another spiraling descent around 63.1 degrees latitude.
@@ -292,10 +292,10 @@ lat.max <- 65.0   # northern latitude
 d <- coord.filter(d, lon.min,lon.max,lat.min,lat.max)
 ```
 
-![](ESA_CO2_demo_files/figure-html/map-subset-1.png)<!-- -->
+![](Airborne_geotrajectory_CO2_files/figure-html/map-subset-1.png)<!-- -->
 
 Again , plot the CO<sub>2</sub> concentrations by altitude and time.
-![](ESA_CO2_demo_files/figure-html/plot-co2-altitude-subset-1.png)<!-- -->
+![](Airborne_geotrajectory_CO2_files/figure-html/plot-co2-altitude-subset-1.png)<!-- -->
 
 
 Figure 7 shows a clear gradient in CO<sub>2</sub> concentrations with altitude.
@@ -333,10 +333,10 @@ unique(d$flight_id)     # show flights
 ```
 This subset includes 13 flights, ranging in dates from April to October. 
 
-![](ESA_CO2_demo_files/figure-html/map-seAK-1.png)<!-- -->
+![](Airborne_geotrajectory_CO2_files/figure-html/map-seAK-1.png)<!-- -->
   
 
-![](ESA_CO2_demo_files/figure-html/plot-co2-seAK-1.png)<!-- -->
+![](Airborne_geotrajectory_CO2_files/figure-html/plot-co2-seAK-1.png)<!-- -->
   
 The plot of the CO<sub>2</sub> concentrations shows seasonal patterns by altitude, but the temporal details of individual flights are obscured. The CO<sub>2</sub> data for a specific flight or time period could be extracted by filtering by date (i.e., time.filter() function) or *flight_id* (flight.filter()) shown above.  
 

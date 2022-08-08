@@ -1,4 +1,4 @@
-# Visualizing airborne in-situ CO<sub>2</sub> data from NetCDF using R
+# Visualizing airborne in-situ CO<sub>2</sub> geotrajectory data from NetCDF using R
 
 ### Presented at 2022 Ecological Society of America workshop: *Exploring changes in vulnerable ecosystems with NASA data*
 
