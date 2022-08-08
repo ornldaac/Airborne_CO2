@@ -39,8 +39,8 @@ Participants should have a basic understanding of R and some exposure to geospat
 
 ## 3.2 Data
 
-1. [Sign in to NASA Earthdata](https://urs.earthdata.nasa.gov/users/new). New users must set up an account in order to download data.  
-2. [Download ABoVE_2017_insitu_10sec.nc](https://daac.ornl.gov/daacdata/above/ABoVE_Arctic_CAP/data/ABoVE_2017_insitu_10sec.nc)  
+1. Sign in to [NASA Earthdata](https://urs.earthdata.nasa.gov/users/new). New users must set up an account in order to download data.  
+2. Download [ABoVE_2017_insitu_10sec.nc](https://daac.ornl.gov/daacdata/above/ABoVE_Arctic_CAP/data/ABoVE_2017_insitu_10sec.nc)  
   
 
 # 4. Procedure
@@ -55,8 +55,8 @@ Participants should have a basic understanding of R and some exposure to geospat
 
 For users new to NetCDFs, these resources may be useful.
 
-* [*NetCD-what? An Ecologist’s Guide to Working with Daymet and other NetCDF-formatted Data*](https://daac.ornl.gov/resources/tutorials/NetCDF_webinar_08302017.html) explains the netCDF file format with examples from gridded weather data.
-* [*Webinar: NetCDF Why and How: Creating Publication Quality NetCDF Datasets*](https://daac.ornl.gov/resources/tutorials/create_publication_quality_netcdf/) discusses the 'how and why' of using the netCDF data structure 
+* [*NetCD-what? An Ecologist’s Guide to Working with Daymet and other NetCDF-formatted Data*](https://daac.ornl.gov/resources/tutorials/NetCDF_webinar_08302017.html) explains the NetCDF file format with examples from gridded weather data.
+* [*Webinar: NetCDF Why and How: Creating Publication Quality NetCDF Datasets*](https://daac.ornl.gov/resources/tutorials/create_publication_quality_netcdf/) discusses the 'how and why' of using the NetCDF data structure 
 *  [*How to Open and Work with NetCDF Data in R*](https://github.com/ornldaac/netCDF_data_in_R) is a tutorial providing additional practice working with this data format in R.
 
 # 5. Credits  
