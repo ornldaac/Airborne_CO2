@@ -39,7 +39,7 @@ Participants should have a basic understanding of R and some exposure to geospat
 
 ## 3.2 Data
 
-1. [Sign in to NASA Earthdata](https://urs.earthdata.nasa.gov/users/new)  
+1. [Sign in to NASA Earthdata](https://urs.earthdata.nasa.gov/users/new). New users must set up an account in order to download data.  
 2. [Download ABoVE_2017_insitu_10sec.nc](https://daac.ornl.gov/daacdata/above/ABoVE_Arctic_CAP/data/ABoVE_2017_insitu_10sec.nc)  
   
 
@@ -47,9 +47,9 @@ Participants should have a basic understanding of R and some exposure to geospat
 
 ## 4.1 Tutorial exercise  
 
-1. [R Markdown](https://github.com/ornldaac/airborne_CO2/blob/main/ESA_CO2_demo.Rmd)
-2. [Markdown](https://github.com/ornldaac/airborne_CO2/blob/main/ESA_CO2_demo.md)
-3. [PDF](https://github.com/ornldaac/airborne_CO2/blob/main/ESA_CO2_demo.pdf)
+1. [R Markdown](https://github.com/ornldaac/airborne_CO2/blob/main/Airborne_CO2_demo.Rmd)
+2. [Markdown](https://github.com/ornldaac/airborne_CO2/blob/main/Airborne_CO2_demo.md)
+3. [PDF](https://github.com/ornldaac/airborne_CO2/blob/main/Airborne_CO2_demo.pdf)
 
 ## 4.2 Additional resources
 
