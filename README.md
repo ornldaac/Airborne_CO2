@@ -11,7 +11,7 @@
 
 # 1. Overview
 
-This repository holds an exercise to demonstrate how to visiualize airborne geotrajectory information saved in a NetCDF file and how to subset the dataset for further analysis.  The excercise uses the open-source software R.  The procedure is available as a R Markdown document for use with RStudio, in standard Markdown format, and as a PDF.
+This repository holds an exercise to demonstrate how to visualize airborne geotrajectory information saved in a NetCDF file and how to subset the dataset for further analysis.  The excercise uses the open-source software R.  The procedure is available as a R Markdown document for use with RStudio, in standard Markdown format, and as a PDF.
 
 # 2. Dataset
 
